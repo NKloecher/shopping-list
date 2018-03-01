@@ -3,13 +3,6 @@ package com.example.nicolai.shoppinglist.storage;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
-
-import com.example.nicolai.shoppinglist.model.ShoppingList;
-
-/**
- * Created by Nicolai on 01-03-2018.
- */
 
 public class ShoppingListOpenHelper extends SQLiteOpenHelper {
 

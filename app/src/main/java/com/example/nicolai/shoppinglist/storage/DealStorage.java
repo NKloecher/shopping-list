@@ -7,18 +7,13 @@ import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.nicolai.shoppinglist.model.Deal;
-import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.model.Store;
 
-/**
- * Created by mathias on 01/03/2018.
- */
-
 public class DealStorage {
-    private static final String TABLE_NAME = "DEAL";
-    private static final String _id = "_id";
-    private static final String DEAL_PRICE = "DEAL_PRICE";
-    private static final String STORE_ID = "STORE_ID";
+    public static final String TABLE_NAME = "DEAL";
+    public static final String _id = "_id";
+    public static final String DEAL_PRICE = "DEAL_PRICE";
+    public static final String STORE_ID = "STORE_ID";
 
     private static DealStorage instance;
     private static ShoppingListOpenHelper openHelper;

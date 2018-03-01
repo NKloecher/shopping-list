@@ -6,20 +6,14 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.nicolai.shoppinglist.model.Deal;
-import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.model.Store;
 
-/**
- * Created by mathias on 01/03/2018.
- */
-
 public class StoreStorage {
-    private static final String TABLE_NAME = "STORE";
-    private static final String _id = "_id";
-    private static final String NAME = "NAME";
-    private static final String ADDRESS = "ADDRESS";
-    private static final String WEBSITE = "WEBSITE";
+    public static final String TABLE_NAME = "STORE";
+    public static final String _id = "_id";
+    public static final String NAME = "NAME";
+    public static final String ADDRESS = "ADDRESS";
+    public static final String WEBSITE = "WEBSITE";
 
     private static StoreStorage instance;
     private static ShoppingListOpenHelper openHelper;
