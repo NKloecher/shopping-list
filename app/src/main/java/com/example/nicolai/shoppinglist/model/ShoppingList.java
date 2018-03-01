@@ -10,7 +10,13 @@ import java.util.ArrayList;
 
 public class ShoppingList {
     private String name;
+    private long id;
     private ArrayList<ListItem> items = new ArrayList<>();
+
+    public ShoppingList(String name, long id){
+        this.name = name;
+        this.id = id;
+    }
 
     public int totalPrice(){
         int sum = 0;
@@ -20,4 +26,11 @@ public class ShoppingList {
         return sum;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public long getId() {
+        return id;
+    }
 }
