@@ -10,18 +10,14 @@ import com.example.nicolai.shoppinglist.model.Deal;
 import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.model.Store;
 
-/**
- * Created by mathias on 01/03/2018.
- */
-
 public class ProductStorage {
-    private static final String TABLE_NAME = "PRODUCT";
-    private static final String _id = "_id";
-    private static final String IMAGE_ID = "IMAGE_ID";
-    private static final String PRICE = "PRICE";
-    private static final String NAME = "NAME";
-    private static final String DEAL_ID = "DEAL_ID";
-    private static final String STORE_ID = "STORE_ID";
+    public static final String TABLE_NAME = "PRODUCT";
+    public static final String _id = "_id";
+    public static final String IMAGE_ID = "IMAGE_ID";
+    public static final String PRICE = "PRICE";
+    public static final String NAME = "NAME";
+    public static final String DEAL_ID = "DEAL_ID";
+    public static final String STORE_ID = "STORE_ID";
 
 
     private static ProductStorage instance;

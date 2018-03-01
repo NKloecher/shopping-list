@@ -9,16 +9,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.nicolai.shoppinglist.model.ListItem;
 import com.example.nicolai.shoppinglist.model.Product;
 
-/**
- * Created by mathias on 01/03/2018.
- */
-
 public class ListItemStorage {
-    private static final String TABLE_NAME = "LIST_ITEM";
-    private static final String _id = "_id";
-    private static final String AMOUNT = "AMOUNT";
-    private static final String PRODUCT_ID = "PRODUCT_ID";
-    private static final String SHOPPING_LIST_ID = "SHOPPING_LIST_ID";
+    public static final String TABLE_NAME = "LIST_ITEM";
+    public static final String _id = "_id";
+    public static final String AMOUNT = "AMOUNT";
+    public static final String PRODUCT_ID = "PRODUCT_ID";
+    public static final String SHOPPING_LIST_ID = "SHOPPING_LIST_ID";
 
     private static ListItemStorage instance;
     private static ShoppingListOpenHelper openHelper;

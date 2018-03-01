@@ -9,10 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.nicolai.shoppinglist.model.ShoppingList;
 
-/**
- * Created by Nicolai on 01-03-2018.
- */
-
 public class ShoppingListStorage {
     public static final String NAME = "NAME";
     public static final String ID = "_id";
@@ -21,7 +17,6 @@ public class ShoppingListStorage {
 
     private static ShoppingListStorage instance;
     private static ShoppingListOpenHelper helper;
-//    private static SQLiteDatabase db;
 
     public static ShoppingListStorage getInstance(Context context){
         if (instance == null){
