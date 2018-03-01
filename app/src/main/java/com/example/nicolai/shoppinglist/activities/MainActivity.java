@@ -1,10 +1,12 @@
-package com.example.nicolai.shoppinglist;
+package com.example.nicolai.shoppinglist.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.nicolai.shoppinglist.R;
 
 public class MainActivity extends AppCompatActivity {
 

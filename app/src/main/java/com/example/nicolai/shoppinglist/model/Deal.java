@@ -1,4 +1,4 @@
-package com.example.nicolai.shoppinglist;
+package com.example.nicolai.shoppinglist.model;
 
 /**
  * Created by Nicolai on 22-02-2018.

@@ -1,4 +1,4 @@
-package com.example.nicolai.shoppinglist;
+package com.example.nicolai.shoppinglist.model;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

@@ -1,4 +1,6 @@
-package com.example.nicolai.shoppinglist;
+package com.example.nicolai.shoppinglist.model;
+
+import com.example.nicolai.shoppinglist.model.ListItem;
 
 import java.util.ArrayList;
 

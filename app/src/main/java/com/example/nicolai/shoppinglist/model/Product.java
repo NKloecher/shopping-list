@@ -1,6 +1,4 @@
-package com.example.nicolai.shoppinglist;
-
-import java.util.ArrayList;
+package com.example.nicolai.shoppinglist.model;
 
 /**
  * Created by Nicolai on 22-02-2018.
