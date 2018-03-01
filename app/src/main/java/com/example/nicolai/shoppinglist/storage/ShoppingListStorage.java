@@ -14,9 +14,9 @@ import com.example.nicolai.shoppinglist.model.ShoppingList;
  */
 
 public class ShoppingListStorage {
-    private static final String NAME = "NAME";
-    private static final String ID = "_id";
-    private static final String SHOPPINGLIST = "SHOPPINGLIST";
+    public static final String NAME = "NAME";
+    public static final String ID = "_id";
+    public static final String SHOPPINGLIST = "SHOPPINGLIST";
 
 
     private static ShoppingListStorage instance;
