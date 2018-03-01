@@ -41,8 +41,39 @@ public class ShoppingListOpenHelper extends SQLiteOpenHelper {
 
     private void updateDb(SQLiteDatabase db, int oldVersion, int newVersion){
         if (oldVersion < 1){
-            db.execSQL("CREATE TABLE SHOPPINGLIST(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            db.execSQL("CREATE TABLE SHOPPINGLIST(" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "NAME TEXT)");
+
+            db.execSQL("CREATE TABLE LIST_ITEM (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "AMOUNT INTEGER," +
+                    "SHOPPING_LIST_ID INTEGER," +
+                    "PRODUCT_ID INTEGER," +
+                    "FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCT(_id)," +
+                    "FOREIGN KEY (SHOPPING_LIST_ID) REFERENCES SHOPPINGLIST(_id))");
+
+            db.execSQL("CREATE TABLE PRODUCT (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "IMAGE_ID INTEGER," +
+                    "PRICE INTEGER," +
+                    "NAME TEXT," +
+                    "DEAL_ID INTEGER," +
+                    "STORE_ID INTEGER," +
+                    "FOREIGN KEY (DEAL_ID) REFERENCES DEAL(_id)," +
+                    "FOREIGN KEY (STORE_ID) REFERENCES STORE(_id))");
+
+            db.execSQL("CREATE TABLE DEAL (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "DEAL_PRICE INTEGER," +
+                    "STORE_ID INTEGER," +
+                    "FOREIGN KEY (STORE_ID) REFERENCES STORE(_id))");
+
+            db.execSQL("CREATE TABLE STORE (" +
+                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "NAME TEXT," +
+                    "ADDRESS TEXT," +
+                    "WEBSITE TEXT)");
         }
     }
 }
