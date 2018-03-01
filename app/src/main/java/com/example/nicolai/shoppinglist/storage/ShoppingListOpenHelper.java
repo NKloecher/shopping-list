@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ShoppingListOpenHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "SHOPPINGLIST";
+    private static final String DB_NAME = "SHOPPING_LIST";
     private static final int VERSION = 1;
     private static ShoppingListOpenHelper instance;
 
@@ -21,7 +21,6 @@ public class ShoppingListOpenHelper extends SQLiteOpenHelper {
         super(context.getApplicationContext(), DB_NAME, null,VERSION);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         updateDb(db,0, VERSION);
@@ -34,7 +33,7 @@ public class ShoppingListOpenHelper extends SQLiteOpenHelper {
 
     private void updateDb(SQLiteDatabase db, int oldVersion, int newVersion){
         if (oldVersion < 1){
-            db.execSQL("CREATE TABLE SHOPPINGLIST(" +
+            db.execSQL("CREATE TABLE SHOPPING_LIST (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "NAME TEXT)");
 

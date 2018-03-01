@@ -12,7 +12,7 @@ import com.example.nicolai.shoppinglist.model.ShoppingList;
 public class ShoppingListStorage {
     public static final String NAME = "NAME";
     public static final String ID = "_id";
-    public static final String SHOPPINGLIST = "SHOPPINGLIST";
+    public static final String TABLE_NAME = "SHOPPING_LIST";
 
 
     private static ShoppingListStorage instance;
@@ -30,44 +30,38 @@ public class ShoppingListStorage {
     }
 
     public long insert(ShoppingList list){
-        try (SQLiteDatabase db = helper.getWritableDatabase()){
+        SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues shoppingListValues = new ContentValues();
         shoppingListValues.put(NAME, list.getName());
-        return db.insert(SHOPPINGLIST, null, shoppingListValues);
-        }
+        return db.insert(TABLE_NAME, null, shoppingListValues);
     }
 
     public long update(ShoppingList list, String name){
-        try (SQLiteDatabase db = helper.getWritableDatabase()){
-            ContentValues values = new ContentValues();
-            values.put(NAME, name);
-            return db.update(SHOPPINGLIST, values, "_id=?", new String[] {Long.toString(list.getId())});
-        }
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NAME, name);
+        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(list.getId())});
     }
 
     public long remove(ShoppingList list){
-        try (SQLiteDatabase db = helper.getWritableDatabase()){
-            return db.delete(list.getName(), "_id=?", new String[] {Long.toString(list.getId())});
-        }
+        SQLiteDatabase db = helper.getWritableDatabase();
+        return db.delete(list.getName(), "_id=?", new String[] {Long.toString(list.getId())});
     }
 
     public ShoppingList get(long id){
-        try (SQLiteDatabase db = helper.getReadableDatabase();
-        ShoppingListWrapper wrapper = new ShoppingListWrapper(db.query(SHOPPINGLIST, new String[]{NAME,ID},"_id=?",
-                new String[]{Long.toString(id)},null,null,null,null ))){
-            wrapper.moveToNext();
-            return wrapper.get();
-        }
+        SQLiteDatabase db = helper.getReadableDatabase();
+        ShoppingListWrapper wrapper = new ShoppingListWrapper(db.query(TABLE_NAME, new String[]{NAME,ID},"_id=?",
+                new String[]{Long.toString(id)},null,null,null,null ));
+        wrapper.moveToNext();
+        return wrapper.get();
     }
 
     public ShoppingListWrapper getAll(){
-        try (SQLiteDatabase db = helper.getReadableDatabase()){
-             return new ShoppingListWrapper(db.query(SHOPPINGLIST, new String[]{NAME,ID},
-             null,null,null,null,null,null ));
-        }
+        SQLiteDatabase db = helper.getReadableDatabase();
+        return new ShoppingListWrapper(db.query(TABLE_NAME, new String[] {ID, NAME}, null, null, null, null, null, null));
     }
 
-    public class ShoppingListWrapper extends CursorWrapper{
+    class ShoppingListWrapper extends CursorWrapper{
 
         public ShoppingListWrapper(Cursor cursor) {
             super(cursor);
@@ -81,7 +75,4 @@ public class ShoppingListStorage {
             return new ShoppingList(nameText, id);
         }
     }
-
-
-
 }

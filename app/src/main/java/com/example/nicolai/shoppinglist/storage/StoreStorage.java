@@ -28,44 +28,39 @@ public class StoreStorage {
     }
 
     public long insert(Store s) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            ContentValues values = new ContentValues();
-            values.put(NAME, s.getName());
-            values.put(ADDRESS, s.getAddress());
-            values.put(WEBSITE, s.getWebsite());
-            return db.insert(TABLE_NAME, null, values);
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NAME, s.getName());
+        values.put(ADDRESS, s.getAddress());
+        values.put(WEBSITE, s.getWebsite());
+        return db.insert(TABLE_NAME, null, values);
     }
 
     public long remove(Store s) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(s.getId())});
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(s.getId())});
     }
 
     public long update(Store s) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            ContentValues values = new ContentValues();
-            values.put(NAME, s.getName());
-            values.put(ADDRESS, s.getAddress());
-            values.put(WEBSITE, s.getWebsite());
-            return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(s.getId())});
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NAME, s.getName());
+        values.put(ADDRESS, s.getAddress());
+        values.put(WEBSITE, s.getWebsite());
+        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(s.getId())});
     }
 
     public Store get(long id) {
-        try (SQLiteDatabase db = openHelper.getReadableDatabase();
-             StoreWrapper cursor = new StoreWrapper(db.query(TABLE_NAME, new String[]{_id, NAME, ADDRESS, WEBSITE}, "_id=?", new String[] {Long.toString(id)},
-                     null, null,null,null))) {
-            cursor.moveToNext();
-            return cursor.get();
-        }
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        StoreWrapper cursor = new StoreWrapper(db.query(TABLE_NAME, new String[]{_id, NAME, ADDRESS, WEBSITE}, "_id=?", new String[] {Long.toString(id)},
+                 null, null,null,null));
+        cursor.moveToNext();
+        return cursor.get();
     }
 
     public StoreWrapper getAll() {
-        try (SQLiteDatabase db = openHelper.getReadableDatabase()) {
-            return new StoreWrapper(db.query(TABLE_NAME, new String[]{_id, NAME, ADDRESS, WEBSITE}, null, null, null, null, null, null));
-        }
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        return new StoreWrapper(db.query(TABLE_NAME, new String[]{_id, NAME, ADDRESS, WEBSITE}, null, null, null, null, null, null));
     }
 
     class StoreWrapper extends CursorWrapper {

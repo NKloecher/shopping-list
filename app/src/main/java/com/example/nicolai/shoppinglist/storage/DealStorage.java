@@ -30,42 +30,37 @@ public class DealStorage {
     }
 
     public long insert(Deal d) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            ContentValues values = new ContentValues();
-            values.put(DEAL_PRICE, d.price());
-            values.put(STORE_ID, d.getStore().getId());
-            return db.insert(TABLE_NAME, null, values);
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DEAL_PRICE, d.price());
+        values.put(STORE_ID, d.getStore().getId());
+        return db.insert(TABLE_NAME, null, values);
     }
 
     public long remove(Deal d) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(d.getId())});
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(d.getId())});
     }
 
     public long update(Deal d) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            ContentValues values = new ContentValues();
-            values.put(DEAL_PRICE, d.price());
-            values.put(STORE_ID, d.getStore().getId());
-            return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(d.getId())});
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DEAL_PRICE, d.price());
+        values.put(STORE_ID, d.getStore().getId());
+        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(d.getId())});
     }
 
     public Deal get(long id) {
-        try (SQLiteDatabase db = openHelper.getReadableDatabase();
-             DealWrapper cursor = new DealWrapper(db.query(TABLE_NAME, new String[]{_id, DEAL_PRICE, STORE_ID}, "_id=?", new String[] {Long.toString(id)},
-                     null, null,null,null))) {
-            cursor.moveToNext();
-            return cursor.get();
-        }
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+         DealWrapper cursor = new DealWrapper(db.query(TABLE_NAME, new String[]{_id, DEAL_PRICE, STORE_ID}, "_id=?", new String[] {Long.toString(id)},
+                 null, null,null,null));
+        cursor.moveToNext();
+        return cursor.get();
     }
 
     public DealWrapper getAll() {
-        try (SQLiteDatabase db = openHelper.getReadableDatabase()) {
-            return new DealWrapper(db.query(TABLE_NAME, new String[]{_id, DEAL_PRICE, STORE_ID}, null, null, null, null, null, null));
-        }
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        return new DealWrapper(db.query(TABLE_NAME, new String[]{_id, DEAL_PRICE, STORE_ID}, null, null, null, null, null, null));
     }
 
     class DealWrapper extends CursorWrapper {

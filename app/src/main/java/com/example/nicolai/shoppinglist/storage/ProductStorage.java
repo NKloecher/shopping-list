@@ -37,46 +37,41 @@ public class ProductStorage {
     }
 
     public long insert(Product p) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            ContentValues values = new ContentValues();
-            values.put(IMAGE_ID, p.getImageID());
-            values.put(PRICE, p.getPrice());
-            values.put(DEAL_ID, p.getDeal().getId());
-            values.put(STORE_ID, p.getStore().getId());
-            return db.insert(TABLE_NAME, null, values);
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(IMAGE_ID, p.getImageID());
+        values.put(PRICE, p.getPrice());
+        values.put(DEAL_ID, p.getDeal().getId());
+        values.put(STORE_ID, p.getStore().getId());
+        return db.insert(TABLE_NAME, null, values);
     }
 
     public long remove(Product p) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(p.getId())});
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(p.getId())});
     }
 
     public long update(Product p) {
-        try (SQLiteDatabase db = openHelper.getWritableDatabase()) {
-            ContentValues values = new ContentValues();
-            values.put(IMAGE_ID, p.getImageID());
-            values.put(PRICE, p.getPrice());
-            values.put(DEAL_ID, p.getDeal().getId());
-            values.put(STORE_ID, p.getStore().getId());
-            return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(p.getId())});
-        }
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(IMAGE_ID, p.getImageID());
+        values.put(PRICE, p.getPrice());
+        values.put(DEAL_ID, p.getDeal().getId());
+        values.put(STORE_ID, p.getStore().getId());
+        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(p.getId())});
     }
 
     public Product get(long id) {
-        try (SQLiteDatabase db = openHelper.getReadableDatabase();
-             ProductWrapper cursor = new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, IMAGE_ID, PRICE, NAME, DEAL_ID, STORE_ID}, "_id=?", new String[] {Long.toString(id)},
-                     null, null,null,null))) {
-            cursor.moveToNext();
-            return cursor.get();
-        }
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        ProductWrapper cursor = new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, IMAGE_ID, PRICE, NAME, DEAL_ID, STORE_ID}, "_id=?", new String[] {Long.toString(id)},
+                 null, null,null,null));
+        cursor.moveToNext();
+        return cursor.get();
     }
 
     public ProductWrapper getAll() {
-        try (SQLiteDatabase db = openHelper.getReadableDatabase()) {
-            return new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, IMAGE_ID, PRICE, NAME, DEAL_ID, STORE_ID}, null, null, null, null, null, null));
-        }
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        return new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, IMAGE_ID, PRICE, NAME, DEAL_ID, STORE_ID}, null, null, null, null, null, null));
     }
 
     class ProductWrapper extends CursorWrapper {
