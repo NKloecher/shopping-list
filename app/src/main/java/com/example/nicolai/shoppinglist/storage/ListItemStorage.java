@@ -66,12 +66,12 @@ public class ListItemStorage {
         return new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, AMOUNT, PRODUCT_ID}, null, null, null, null, null, null));
     }
 
-    public ListItemWrapper getAllInList(long listId) {
+    public ListItemWrapper getAllItemsInList(long listId) {
         SQLiteDatabase db = openHelper.getReadableDatabase();
         return new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, AMOUNT, PRODUCT_ID}, SHOPPING_LIST_ID + "=?" , new String[]{Long.toString(listId)}, null, null, null, null));
     }
 
-    class ListItemWrapper extends CursorWrapper {
+    public class ListItemWrapper extends CursorWrapper {
         public ListItemWrapper(Cursor cursor) {
             super(cursor);
         }

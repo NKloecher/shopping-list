@@ -1,6 +1,7 @@
 package com.example.nicolai.shoppinglist;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -31,11 +33,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         storage = ShoppingListStorage.getInstance(this);
+        new GetAsyncTask().execute();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mainactivity_menu, menu);
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         return true;
     }
 
@@ -71,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class InsertAsyncTask extends AsyncTask<Void,Void,Void>{
-
         @Override
         protected Void doInBackground(Void... voids) {
             ShoppingList list = new ShoppingList(newListNameInput.getText().toString(), -1);
@@ -99,7 +101,14 @@ public class MainActivity extends AppCompatActivity {
                     new String[] {ShoppingListStorage.NAME}, new int[] {android.R.id.text1},0);
             ListView listView = findViewById(R.id.mainListView);
             listView.setAdapter(adapter);
-            //todo setOnClick
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent i = new Intent(MainActivity.this, ListActivity.class);
+                    i.putExtra(ListActivity.LIST_ID_EXTRA, id);
+                    startActivity(i);
+                }
+            });
             }else{
                 adapter.changeCursor(cursor);
             }

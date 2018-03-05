@@ -13,7 +13,6 @@ import com.example.nicolai.shoppinglist.model.Store;
 public class ProductStorage {
     public static final String TABLE_NAME = "PRODUCT";
     public static final String _id = "_id";
-    public static final String IMAGE_ID = "IMAGE_ID";
     public static final String PRICE = "PRICE";
     public static final String NAME = "NAME";
     public static final String DEAL_ID = "DEAL_ID";
@@ -39,9 +38,8 @@ public class ProductStorage {
     public long insert(Product p) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(IMAGE_ID, p.getImageID());
         values.put(PRICE, p.getPrice());
-        values.put(DEAL_ID, p.getDeal().getId());
+        values.put(DEAL_ID, p.getDeal() != null ? p.getDeal().getId() : null);
         values.put(STORE_ID, p.getStore().getId());
         return db.insert(TABLE_NAME, null, values);
     }
@@ -51,19 +49,14 @@ public class ProductStorage {
         return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(p.getId())});
     }
 
-    public long update(Product p) {
+    public long update(long id, ContentValues values) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(IMAGE_ID, p.getImageID());
-        values.put(PRICE, p.getPrice());
-        values.put(DEAL_ID, p.getDeal().getId());
-        values.put(STORE_ID, p.getStore().getId());
-        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(p.getId())});
+        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(id)});
     }
 
     public Product get(long id) {
         SQLiteDatabase db = openHelper.getReadableDatabase();
-        ProductWrapper cursor = new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, IMAGE_ID, PRICE, NAME, DEAL_ID, STORE_ID}, "_id=?", new String[] {Long.toString(id)},
+        ProductWrapper cursor = new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, PRICE, NAME, DEAL_ID, STORE_ID}, "_id=?", new String[] {Long.toString(id)},
                  null, null,null,null));
         cursor.moveToNext();
         return cursor.get();
@@ -71,10 +64,15 @@ public class ProductStorage {
 
     public ProductWrapper getAll() {
         SQLiteDatabase db = openHelper.getReadableDatabase();
-        return new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, IMAGE_ID, PRICE, NAME, DEAL_ID, STORE_ID}, null, null, null, null, null, null));
+        return new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, PRICE, NAME, DEAL_ID, STORE_ID}, null, null, null, null, null, null));
     }
 
-    class ProductWrapper extends CursorWrapper {
+    public Cursor getAllInStore(long storeId) {
+        SQLiteDatabase db = openHelper.getReadableDatabase();
+        return new ProductWrapper(db.query(TABLE_NAME, new String[]{_id, PRICE, NAME, DEAL_ID, STORE_ID}, STORE_ID + "=?", new String[] {Long.toString(storeId)}, null, null, null, null));
+    }
+
+    public class ProductWrapper extends CursorWrapper {
         public ProductWrapper(Cursor cursor) {
             super(cursor);
         }
@@ -88,7 +86,6 @@ public class ProductStorage {
             Store s = ss.get(storeId);
 
             return new Product(getInt(getColumnIndex(_id)),
-                    getInt(getColumnIndex(IMAGE_ID)),
                     getInt(getColumnIndex(PRICE)),
                     getString(getColumnIndex(NAME)),
                     s,

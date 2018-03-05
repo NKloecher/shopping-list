@@ -8,12 +8,12 @@ import java.util.ArrayList;
  */
 
 public class Store {
-    private int id;
+    private long id;
     private String name;
     private String address;
     private String website;
 
-    public Store(int id, String name, String address, String website) {
+    public Store(long id, String name, String address, String website) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -33,7 +33,7 @@ public class Store {
         return website;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 }

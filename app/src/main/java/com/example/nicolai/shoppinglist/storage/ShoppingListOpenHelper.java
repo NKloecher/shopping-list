@@ -47,7 +47,6 @@ public class ShoppingListOpenHelper extends SQLiteOpenHelper {
 
             db.execSQL("CREATE TABLE PRODUCT (" +
                     "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "IMAGE_ID INTEGER," +
                     "PRICE INTEGER," +
                     "NAME TEXT," +
                     "DEAL_ID INTEGER," +
