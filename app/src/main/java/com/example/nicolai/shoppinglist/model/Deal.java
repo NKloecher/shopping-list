@@ -5,17 +5,17 @@ package com.example.nicolai.shoppinglist.model;
  */
 
 public class Deal {
-    private int id;
+    private long id;
     private int dealPrice;
     private Store store;
 
-    public Deal(int id, int dealPrice, Store store) {
+    public Deal(long id, int dealPrice, Store store) {
         this.id = id;
         this.dealPrice = dealPrice;
         this.store = store;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -26,4 +26,6 @@ public class Deal {
     public int price() {
         return dealPrice;
     }
+
+    public void setId(long id) { this.id = id; }
 }

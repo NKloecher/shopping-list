@@ -12,7 +12,7 @@ public class Product {
     private Deal deal;
     private Store store;
 
-    public Product(int id, int price, String name, Store store, Deal deal) {
+    public Product(long id, int price, String name, Store store, Deal deal) {
         this.id = id;
         this.price = price;
         this.name = name;

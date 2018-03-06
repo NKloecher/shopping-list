@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.nicolai.shoppinglist.ProductSelectActivity">
+    tools:context="com.example.nicolai.shoppinglist.ProductActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,7 +14,7 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        title="Select Product"/>
+        app:title="Create Product"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,8 +38,24 @@
             android:text="Add Store" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/product_list"
+    <EditText android:id="@+id/name"
+        android:hint="name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText android:id="@+id/price"
+        android:hint="price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+
+    <EditText android:id="@+id/deal"
+        android:hint="deal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+
+    <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
@@ -47,7 +64,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:onClick="onAddProduct"
-        android:text="Add New Item"/>
-
+        android:onClick="onCreateProduct"
+        android:text="Add Product" />
 </LinearLayout>

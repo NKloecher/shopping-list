@@ -18,16 +18,22 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nicolai.shoppinglist.model.ListItem;
 import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.model.Store;
+import com.example.nicolai.shoppinglist.storage.ListItemStorage;
 import com.example.nicolai.shoppinglist.storage.ProductStorage;
 import com.example.nicolai.shoppinglist.storage.ShoppingListStorage;
 import com.example.nicolai.shoppinglist.storage.StoreStorage;
 
 public class ListItemActivity extends AppCompatActivity {
 
+    public static final String LIST_ID_EXTRA = "LIST_ID";
+    private static final int PRODUCT_SELECT_RESULT = 1;
+
+    long listId;
     long productId = -1;
 
     @Override
@@ -36,12 +42,28 @@ public class ListItemActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setContentView(R.layout.activity_list_item);
+        listId = getIntent().getExtras().getLong(LIST_ID_EXTRA);
+    }
+
+    public void onDone(View view) {
+        if (productId == -1) {
+            Toast.makeText(this, "no product selected", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Product p = new Product(productId, -1, null, null, null);
+        int amount = Integer.parseInt(((EditText)findViewById(R.id.amount)).getText().toString());
+        ListItem listItem = new ListItem(-1, p, amount);
+        ListItemStorage.getInstance(ListItemActivity.this).insert(listItem, listId);
+        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == PRODUCT_SELECT_RESULT && resultCode == Activity.RESULT_OK) {
             productId = data.getLongExtra(ProductSelectActivity.SELECTED_PRODUCT_ID_EXTRA, -1);
+
+
             new GetProductAsyncTask().execute();
         } else {
             throw new Error("invalid requestCode or resultCode");
@@ -49,7 +71,7 @@ public class ListItemActivity extends AppCompatActivity {
     }
 
     public void onChangeProduct(View view) {
-        startActivityForResult(new Intent(this, ProductSelectActivity.class), 1);
+        startActivityForResult(new Intent(this, ProductSelectActivity.class), PRODUCT_SELECT_RESULT);
     }
 
     class GetProductAsyncTask extends AsyncTask<Void, Void, Product> {
@@ -66,7 +88,7 @@ public class ListItemActivity extends AppCompatActivity {
             TextView store = findViewById(R.id.store);
 
             name.setText(product.getName());
-            price.setText(product.price());
+            price.setText(Integer.toString(product.price()));
             store.setText(product.getStore().getName());
         }
     }

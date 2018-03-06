@@ -30,7 +30,7 @@ public class ListItemStorage {
         ps = ProductStorage.getInstance(context);
     }
 
-    public long insert(ListItem listItem, int listId) {
+    public long insert(ListItem listItem, long listId) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(AMOUNT, listItem.getAmount());

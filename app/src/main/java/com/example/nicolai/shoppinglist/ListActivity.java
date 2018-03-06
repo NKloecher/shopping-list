@@ -18,8 +18,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.nicolai.shoppinglist.model.ListItem;
+import com.example.nicolai.shoppinglist.model.ShoppingList;
 import com.example.nicolai.shoppinglist.storage.ListItemStorage;
 import com.example.nicolai.shoppinglist.storage.ShoppingListStorage;
+
+import org.w3c.dom.Text;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -27,6 +30,7 @@ public class ListActivity extends AppCompatActivity {
 
     ListItemStorage storage;
     Toolbar toolbar;
+    long listId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,13 @@ public class ListActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         storage = ListItemStorage.getInstance(this);
+        listId = getIntent().getExtras().getLong(LIST_ID_EXTRA);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         new GetAsyncTask().execute();
     }
 
@@ -49,6 +60,7 @@ public class ListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_list_item:
                 Intent i = new Intent(this, ListItemActivity.class);
+                i.putExtra(ListItemActivity.LIST_ID_EXTRA, listId);
                 startActivity(i);
                 break;
         }
@@ -57,29 +69,30 @@ public class ListActivity extends AppCompatActivity {
 
     class GetAsyncResult {
         public Cursor listItemCursor;
-        public String listName;
+        public ShoppingList list;
 
-        public GetAsyncResult(Cursor listItemCursor, String listName) {
+        public GetAsyncResult(Cursor listItemCursor, ShoppingList list) {
             this.listItemCursor = listItemCursor;
-            this.listName = listName;
+            this.list = list;
         }
     }
 
     class GetAsyncTask extends AsyncTask<Void,Void,GetAsyncResult> {
         @Override
         protected GetAsyncResult doInBackground(Void... voids) {
-            long listId = getIntent().getExtras().getLong(LIST_ID_EXTRA);
-            String listName = ShoppingListStorage.getInstance(ListActivity.this).get(listId).getName();
+            ShoppingList list = ShoppingListStorage.getInstance(ListActivity.this).get(listId);
             Cursor listItemCursor = storage.getAllItemsInList(listId);
 
-            return new GetAsyncResult(listItemCursor, listName);
+            return new GetAsyncResult(listItemCursor, list);
         }
 
         @Override
         protected void onPostExecute(GetAsyncResult result) {
             ListView list = findViewById(R.id.list);
+            TextView total = findViewById(R.id.total);
             list.setAdapter(new ListAdapter(ListActivity.this, result.listItemCursor, 0));
-            toolbar.setTitle(result.listName);
+            toolbar.setTitle(result.list.getName());
+            total.setText("Total: " + Integer.toString(result.list.totalPrice()) + "kr.");
             // todo view item on click
         }
     }
@@ -93,13 +106,23 @@ public class ListActivity extends AppCompatActivity {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ListItem listItem = ((ListItemStorage.ListItemWrapper)cursor).get();
-            TextView name = findViewById(R.id.name);
-            TextView oldPrice = findViewById(R.id.old_price);
-            TextView price = findViewById(R.id.price);
-            name.setText(listItem.getProduct().getName());
-            oldPrice.setText(listItem.getProduct().getPrice());
-            oldPrice.setPaintFlags(oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            price.setText(listItem.getProduct().getPrice());
+            TextView nameT = view.findViewById(R.id.name);
+            TextView oldPriceT = view.findViewById(R.id.old_price);
+            TextView priceT = view.findViewById(R.id.price);
+            TextView amountT = view.findViewById(R.id.amount);
+            nameT.setText(listItem.getProduct().getName());
+            int oldPrice = listItem.getProduct().getPrice();
+            int price = listItem.getProduct().price();
+
+            if (oldPrice > price) {
+                oldPriceT.setText(Integer.toString(oldPrice)+"kr.");
+                oldPriceT.setPaintFlags(oldPriceT.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                oldPriceT.setVisibility(TextView.INVISIBLE);
+            }
+
+            priceT.setText(Integer.toString(price)+"kr.");
+            amountT.setText(Integer.toString(listItem.getAmount()));
         }
 
         @Override

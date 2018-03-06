@@ -20,21 +20,31 @@
     <TextView android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name: Coke"/>
+        android:text=""/>
 
     <TextView android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Price: 10kr"/>
+        android:text=""/>
 
     <TextView android:id="@+id/store"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Store: Netto"/>
+        android:text=""/>
 
     <Button android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onChangeProduct"
         android:text="select product"/>
+
+    <EditText android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Amount"/>
+
+    <Button android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onDone"
+        android:text="done"/>
 
 </LinearLayout>

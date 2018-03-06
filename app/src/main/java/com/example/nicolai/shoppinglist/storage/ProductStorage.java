@@ -39,6 +39,7 @@ public class ProductStorage {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PRICE, p.getPrice());
+        values.put(NAME, p.getName());
         values.put(DEAL_ID, p.getDeal() != null ? p.getDeal().getId() : null);
         values.put(STORE_ID, p.getStore().getId());
         return db.insert(TABLE_NAME, null, values);
