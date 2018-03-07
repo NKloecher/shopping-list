@@ -1,5 +1,6 @@
 package com.example.nicolai.shoppinglist.model;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -23,6 +24,18 @@ public class Store {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public String getAddress() {

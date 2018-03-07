@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.nicolai.shoppinglist.model.Store;
 
+import java.io.Serializable;
+
 public class StoreStorage {
     public static final String TABLE_NAME = "STORE";
     public static final String _id = "_id";

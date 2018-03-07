@@ -58,6 +58,9 @@ public class ProductActivity extends AppCompatActivity {
         if (requestCode == CREATE_STORE_RESULT && resultCode == Activity.RESULT_OK) {
             new GetStoresAsyncTask().execute();
         }
+        else if (resultCode == Activity.RESULT_CANCELED){
+            //Working as intended
+        }
         else {
             throw new Error("invalid requestCode or resultCode");
         }

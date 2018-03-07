@@ -3,8 +3,10 @@ package com.example.nicolai.shoppinglist;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -20,13 +22,99 @@ public class StoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        FloatingActionButton remove = findViewById(R.id.remove_button);
+        remove.hide();
+        if (getIntent().getLongExtra("Store", -1) != -1){
+            remove.show();
+            new GetAsyncTask().execute();
+            toolbar.setTitle("Update Store");
+        }
     }
 
     public void onCreateStore(View view) {
         EditText name = findViewById(R.id.name);
         EditText address = findViewById(R.id.address);
         EditText website = findViewById(R.id.website);
-        new InsertAsyncTask(name.getText().toString(), address.getText().toString(), website.getText().toString()).execute();
+        if (getIntent().getLongExtra("Store", -1) != -1){
+            new UpdateAsyncTask(name.getText().toString(), address.getText().toString(), website.getText().toString()).execute();
+        }
+        else new InsertAsyncTask(name.getText().toString(), address.getText().toString(), website.getText().toString()).execute();
+    }
+
+    public void onDeleteStore(View view){
+        new DeleteAsyncTask().execute();
+    }
+
+    class DeleteAsyncTask extends AsyncTask<Void,Void,Void>{
+
+        private StoreStorage storage;
+        private Store store;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            storage = StoreStorage.getInstance(StoreActivity.this);
+            store = storage.get(getIntent().getLongExtra("Store",-1));
+            storage.remove(store);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            setResult(Activity.RESULT_OK, new Intent());
+            finish();
+        }
+    }
+
+    class UpdateAsyncTask extends AsyncTask<Void, Void, Void>{
+
+        String name;
+        String address;
+        String website;
+
+        public UpdateAsyncTask(String name, String address, String website) {
+            this.name = name;
+            this.address = address;
+            this.website = website;
+        }
+
+        private StoreStorage storage;
+        private Store store;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            storage = StoreStorage.getInstance(StoreActivity.this);
+            store = storage.get(getIntent().getLongExtra("Store",-1));
+            store.setName(name);
+            store.setAddress(address);
+            store.setWebsite(website);
+            storage.update(store);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            setResult(Activity.RESULT_OK, new Intent());
+            finish();
+        }
+    }
+
+    class GetAsyncTask extends AsyncTask<Void, Void, Void>{
+
+        private StoreStorage storage;
+        private Store store;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            storage = StoreStorage.getInstance(StoreActivity.this);
+            store = storage.get(getIntent().getLongExtra("Store",-1));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            ((EditText) findViewById(R.id.name)).setText(store.getName());
+            ((EditText) findViewById(R.id.address)).setText(store.getAddress());
+            ((EditText) findViewById(R.id.website)).setText(store.getWebsite());
+        }
     }
 
     class InsertAsyncTask extends AsyncTask<Store, Void, Long> {
