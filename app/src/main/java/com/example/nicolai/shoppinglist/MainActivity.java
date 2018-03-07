@@ -1,5 +1,6 @@
 package com.example.nicolai.shoppinglist;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.model.ShoppingList;
 import com.example.nicolai.shoppinglist.storage.ShoppingListStorage;
 
@@ -48,7 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //todo toolbar actions
+        if (item.getItemId() == R.id.action_store){
+            startActivity(new Intent(this, ViewStoresActivity.class));
+        }
+        if (item.getItemId() == R.id.action_products){
+            startActivity(new Intent(this, ProductActivity.class));
+        }
         return true;
     }
 

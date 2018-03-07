@@ -20,7 +20,9 @@
         <activity android:name=".ListItemActivity" />
         <activity android:name=".StoreActivity" />
         <activity android:name=".ProductSelectActivity" />
-        <activity android:name=".ProductActivity"></activity>
+        <activity android:name=".ProductActivity"/>
+        <activity android:name=".ViewStoresActivity">
+        </activity>
     </application>
 
 </manifest>

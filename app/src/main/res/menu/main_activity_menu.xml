@@ -8,7 +8,7 @@
         app:showAsAction="always"/>
 
     <item
-        android:title="@string/add_product_button"
+        android:title="@string/add_store_button"
         android:id="@+id/action_store"
         android:icon="@drawable/ic_store_black_24dp"
         app:showAsAction="always"/>

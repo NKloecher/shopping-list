@@ -69,7 +69,11 @@ public class ListItemActivity extends AppCompatActivity {
         if (requestCode == PRODUCT_SELECT_RESULT && resultCode == Activity.RESULT_OK) {
             productId = data.getLongExtra(ProductSelectActivity.SELECTED_PRODUCT_ID_EXTRA, -1);
             new GetProductAsyncTask().execute();
-        } else {
+        }
+        else if (resultCode == Activity.RESULT_CANCELED){
+            //Working as intended
+        }
+        else {
             throw new Error("invalid requestCode or resultCode");
         }
     }
