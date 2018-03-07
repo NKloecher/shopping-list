@@ -8,11 +8,13 @@ public class ListItem {
     private int id;
     private Product product;
     private int amount;
+    private boolean done;
 
-    public ListItem(int id, Product product, int amount) {
+    public ListItem(int id, Product product, int amount, boolean done) {
         this.id = id;
         this.product = product;
         this.amount = amount;
+        this.done = done;
     }
 
     public int getId() {
@@ -26,6 +28,8 @@ public class ListItem {
     public int getAmount() {
         return amount;
     }
+
+    public boolean getDone() { return done; }
 
     public int price(){
         return amount * product.price();

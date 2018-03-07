@@ -1,5 +1,6 @@
 package com.example.nicolai.shoppinglist;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -139,7 +141,8 @@ public class ListActivity extends AppCompatActivity {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            ListItem listItem = ((ListItemStorage.ListItemWrapper)cursor).get();
+            final ListItem listItem = ((ListItemStorage.ListItemWrapper)cursor).get();
+            final CheckBox cb = view.findViewById(R.id.done);
             TextView nameT = view.findViewById(R.id.name);
             TextView oldPriceT = view.findViewById(R.id.old_price);
             TextView priceT = view.findViewById(R.id.price);
@@ -155,6 +158,15 @@ public class ListActivity extends AppCompatActivity {
                 oldPriceT.setVisibility(TextView.INVISIBLE);
             }
 
+            cb.setChecked(listItem.getDone());
+            cb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean state = cb.isChecked();
+
+                    new UpdateItemDoneAsyncTask(listItem.getId(), state).execute();
+                }
+            });
             priceT.setText(Integer.toString(price)+"kr.");
             amountT.setText(Integer.toString(listItem.getAmount()));
         }
@@ -164,6 +176,23 @@ public class ListActivity extends AppCompatActivity {
             LayoutInflater cursorInflater = (LayoutInflater) context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
             return cursorInflater.inflate(R.layout.list_row, parent, false);
+        }
+    }
+
+    class UpdateItemDoneAsyncTask extends AsyncTask<Void, Void, Void> {
+        boolean state;
+        long listItemId;
+
+        public UpdateItemDoneAsyncTask(long listItemId, boolean state) {
+            this.state = state;
+            this.listItemId = listItemId;
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            ContentValues values = new ContentValues();
+            values.put(ListItemStorage.DONE, state ? 1 : 0);
+            ListItemStorage.getInstance(ListActivity.this).update(values, listItemId);
+            return null;
         }
     }
 }

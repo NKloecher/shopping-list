@@ -60,7 +60,7 @@ public class ListItemActivity extends AppCompatActivity {
 
         int amount = Integer.parseInt(amountE.getText().toString());
 
-        ListItemStorage.getInstance(this).insert(amount, productId, listId);
+        ListItemStorage.getInstance(this).insert(amount, productId, listId, false);
         finish();
     }
 

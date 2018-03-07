@@ -42,6 +42,7 @@ public class ShoppingListOpenHelper extends SQLiteOpenHelper {
                     "AMOUNT INTEGER," +
                     "SHOPPING_LIST_ID INTEGER," +
                     "PRODUCT_ID INTEGER," +
+                    "DONE INTEGER," +
                     "FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCT(_id)," +
                     "FOREIGN KEY (SHOPPING_LIST_ID) REFERENCES SHOPPINGLIST(_id))");
 

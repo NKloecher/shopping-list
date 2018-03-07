@@ -14,6 +14,7 @@ public class ListItemStorage {
     public static final String _id = "_id";
     public static final String AMOUNT = "AMOUNT";
     public static final String PRODUCT_ID = "PRODUCT_ID";
+    public static final String DONE = "DONE";
     public static final String SHOPPING_LIST_ID = "SHOPPING_LIST_ID";
 
     private static ListItemStorage instance;
@@ -30,12 +31,13 @@ public class ListItemStorage {
         ps = ProductStorage.getInstance(context);
     }
 
-    public long insert(int amount, long productId, long listId) {
+    public long insert(int amount, long productId, long listId, boolean done) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(AMOUNT, amount);
         values.put(PRODUCT_ID, productId);
         values.put(SHOPPING_LIST_ID, listId);
+        values.put(DONE, done ? 1 : 0);
         return db.insert(TABLE_NAME, null, values);
     }
 
@@ -44,13 +46,9 @@ public class ListItemStorage {
         return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(itemId)});
     }
 
-    public long update(ListItem listItem, int listId) {
+    public long update(ContentValues values, long id) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(AMOUNT, listItem.getAmount());
-        values.put(PRODUCT_ID, listItem.getProduct().getId());
-        values.put(SHOPPING_LIST_ID, listId);
-        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(listItem.getId())});
+        return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(id)});
     }
 
     public ListItem get(long id) {
@@ -63,12 +61,12 @@ public class ListItemStorage {
 
     public ListItemWrapper getAll() {
         SQLiteDatabase db = openHelper.getReadableDatabase();
-        return new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, AMOUNT, PRODUCT_ID}, null, null, null, null, null, null));
+        return new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, DONE, AMOUNT, PRODUCT_ID}, null, null, null, null, null, null));
     }
 
     public ListItemWrapper getAllItemsInList(long listId) {
         SQLiteDatabase db = openHelper.getReadableDatabase();
-        return new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, AMOUNT, PRODUCT_ID}, SHOPPING_LIST_ID + "=?" , new String[]{Long.toString(listId)}, null, null, null, null));
+        return new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, DONE, AMOUNT, PRODUCT_ID}, SHOPPING_LIST_ID + "=?" , new String[]{Long.toString(listId)}, null, null, null, null));
     }
 
     public class ListItemWrapper extends CursorWrapper {
@@ -85,7 +83,8 @@ public class ListItemStorage {
             return new ListItem(
                 getInt(getColumnIndex(_id)),
                 p,
-                getInt(getColumnIndex(AMOUNT)));
+                getInt(getColumnIndex(AMOUNT)),
+                    getInt(getColumnIndex(DONE))  == 1);
         }
     }
 }
