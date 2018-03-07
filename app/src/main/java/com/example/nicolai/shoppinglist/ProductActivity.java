@@ -50,35 +50,7 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     public void onCreateProduct(View view) {
-        if (selectedStoreId == -1) {
-            Toast.makeText(this, "no store selected", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        EditText name = findViewById(R.id.name);
-        EditText price = findViewById(R.id.price);
-        EditText deal = findViewById(R.id.deal);
-
-        if (name.getText().length() == 0) {
-            Toast.makeText(this, "name is required", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (price.getText().length() == 0) {
-            Toast.makeText(this, "price is required", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        Long dealId = null;
-
-        if (deal.getText().length() > 0) {
-            int d = Integer.parseInt(deal.getText().toString());
-            dealId = DealStorage.getInstance(this).insert(d, selectedStoreId);
-        }
-
-        ProductStorage.getInstance(this).insert(Integer.parseInt(price.getText().toString()), name.getText().toString(), selectedStoreId, dealId);
-
-        setResult(Activity.RESULT_OK);
-        finish();
+        new InsertAsyncTask().execute();
     }
 
     @Override
@@ -88,6 +60,45 @@ public class ProductActivity extends AppCompatActivity {
         }
         else {
             throw new Error("invalid requestCode or resultCode");
+        }
+    }
+
+    class InsertAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if (selectedStoreId == -1) {
+                Toast.makeText(ProductActivity.this, "no store selected", Toast.LENGTH_LONG).show();
+                return null;
+            }
+
+            EditText name = findViewById(R.id.name);
+            EditText price = findViewById(R.id.price);
+            EditText deal = findViewById(R.id.deal);
+
+            if (name.getText().length() == 0) {
+                Toast.makeText(ProductActivity.this, "name is required", Toast.LENGTH_LONG).show();
+                return null;
+            }
+            if (price.getText().length() == 0) {
+                Toast.makeText(ProductActivity.this, "price is required", Toast.LENGTH_LONG).show();
+                return null;
+            }
+
+            Long dealId = null;
+
+            if (deal.getText().length() > 0) {
+                int d = Integer.parseInt(deal.getText().toString());
+                dealId = DealStorage.getInstance(ProductActivity.this).insert(d, selectedStoreId);
+            }
+
+            ProductStorage.getInstance(ProductActivity.this).insert(Integer.parseInt(price.getText().toString()), name.getText().toString(), selectedStoreId, dealId);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            setResult(Activity.RESULT_OK);
+            finish();
         }
     }
 

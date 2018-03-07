@@ -46,22 +46,7 @@ public class ListItemActivity extends AppCompatActivity {
     }
 
     public void onDone(View view) {
-        if (productId == -1) {
-            Toast.makeText(this, "no product selected", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        EditText amountE = findViewById(R.id.amount);
-
-        if (amountE.getText().length() == 0) {
-            Toast.makeText(this, "amount is required", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        int amount = Integer.parseInt(amountE.getText().toString());
-
-        ListItemStorage.getInstance(this).insert(amount, productId, listId, false);
-        finish();
+        new InsertAsyncTask().execute();
     }
 
     @Override
@@ -80,6 +65,32 @@ public class ListItemActivity extends AppCompatActivity {
 
     public void onChangeProduct(View view) {
         startActivityForResult(new Intent(this, ProductSelectActivity.class), PRODUCT_SELECT_RESULT);
+    }
+
+    class InsertAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if (productId == -1) {
+                Toast.makeText(ListItemActivity.this, "no product selected", Toast.LENGTH_LONG).show();
+                return null;
+            }
+
+            EditText amountE = findViewById(R.id.amount);
+
+            if (amountE.getText().length() == 0) {
+                Toast.makeText(ListItemActivity.this, "amount is required", Toast.LENGTH_LONG).show();
+                return null;
+            }
+
+            int amount = Integer.parseInt(amountE.getText().toString());
+            ListItemStorage.getInstance(ListItemActivity.this).insert(amount, productId, listId, false);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            finish();
+        }
     }
 
     class GetProductAsyncTask extends AsyncTask<Void, Void, Product> {
