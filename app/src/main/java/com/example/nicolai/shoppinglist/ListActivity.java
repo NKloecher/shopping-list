@@ -8,11 +8,14 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,6 +43,25 @@ public class ListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         storage = ListItemStorage.getInstance(this);
         listId = getIntent().getExtras().getLong(LIST_ID_EXTRA);
+        ListView lists = findViewById(R.id.list);
+        registerForContextMenu(lists);
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_menu, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+                .getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.list_delete:
+                new DeleteAsyncTask(info.id).execute();
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -67,32 +89,44 @@ public class ListActivity extends AppCompatActivity {
         return true;
     }
 
-    class GetAsyncResult {
-        public Cursor listItemCursor;
-        public ShoppingList list;
+    class DeleteAsyncTask extends AsyncTask<Void,Void,Void>{
+        long listItemId;
+        public DeleteAsyncTask(long listItemId) {
+            this.listItemId = listItemId;
+        }
 
-        public GetAsyncResult(Cursor listItemCursor, ShoppingList list) {
-            this.listItemCursor = listItemCursor;
-            this.list = list;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            ListItemStorage.getInstance(ListActivity.this).remove(listItemId);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            new GetAsyncTask().execute();
         }
     }
 
-    class GetAsyncTask extends AsyncTask<Void,Void,GetAsyncResult> {
+    class GetAsyncTask extends AsyncTask<Void,Void,ShoppingList> {
         @Override
-        protected GetAsyncResult doInBackground(Void... voids) {
-            ShoppingList list = ShoppingListStorage.getInstance(ListActivity.this).get(listId);
-            Cursor listItemCursor = storage.getAllItemsInList(listId);
-
-            return new GetAsyncResult(listItemCursor, list);
+        protected ShoppingList doInBackground(Void... voids) {
+            return ShoppingListStorage.getInstance(ListActivity.this).get(listId);
         }
 
         @Override
-        protected void onPostExecute(GetAsyncResult result) {
-            ListView list = findViewById(R.id.list);
-            TextView total = findViewById(R.id.total);
-            list.setAdapter(new ListAdapter(ListActivity.this, result.listItemCursor, 0));
-            toolbar.setTitle(result.list.getName());
-            total.setText("Total: " + Integer.toString(result.list.totalPrice()) + "kr.");
+        protected void onPostExecute(ShoppingList list) {
+            ListView listLv = findViewById(R.id.list);
+            TextView normalPrice = findViewById(R.id.normal_price);
+            TextView totalPrice = findViewById(R.id.total_price);
+            TextView savingsPrice = findViewById(R.id.savings_price);
+            listLv.setAdapter(new ListAdapter(ListActivity.this, list.getItems(), 0));
+            toolbar.setTitle(list.getName());
+            int normal = list.normalPrice();
+            int total = list.totalPrice();
+            int savings = normal -total;
+            normalPrice.setText("Normal: " + Integer.toString(normal) + "kr.");
+            totalPrice.setText("Total: " + Integer.toString(total) + "kr.");
+            savingsPrice.setText("Savings: " + Integer.toString(savings) + "kr.");
             // todo view item on click
         }
     }

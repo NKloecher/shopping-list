@@ -18,7 +18,6 @@ import android.widget.SpinnerAdapter;
 import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.storage.ProductStorage;
 import com.example.nicolai.shoppinglist.storage.StoreStorage;
-import com.example.nicolai.shoppinglist.tasks.GetStoresAsyncTask;
 
 public class ProductSelectActivity extends AppCompatActivity {
 
@@ -26,8 +25,6 @@ public class ProductSelectActivity extends AppCompatActivity {
     private static final int CREATE_STORE_RESULT = 1;
     private static final int CREATE_PRODUCT_RESULT = 2;
     long selectedStoreId = -1;
-
-    ProductStorage productStorage = ProductStorage.getInstance(ProductSelectActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +58,8 @@ public class ProductSelectActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CREATE_STORE_RESULT && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == CREATE_STORE_RESULT || requestCode == CREATE_PRODUCT_RESULT) && resultCode == Activity.RESULT_OK) {
             new GetStoresAsyncTask().execute();
-        }
-        else if (requestCode == CREATE_PRODUCT_RESULT && resultCode == Activity.RESULT_OK) {
-            new GetProductsAsyncTask().execute();
         }
         else {
             throw new Error("invalid requestCode or resultCode");

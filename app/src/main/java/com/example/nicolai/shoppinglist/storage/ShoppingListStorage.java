@@ -7,7 +7,10 @@ import android.database.CursorWrapper;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.nicolai.shoppinglist.model.ListItem;
 import com.example.nicolai.shoppinglist.model.ShoppingList;
+
+import java.util.ArrayList;
 
 public class ShoppingListStorage {
     public static final String NAME = "NAME";
@@ -17,6 +20,7 @@ public class ShoppingListStorage {
 
     private static ShoppingListStorage instance;
     private static ShoppingListOpenHelper helper;
+    private static Context context;
 
     public static ShoppingListStorage getInstance(Context context){
         if (instance == null){
@@ -29,10 +33,10 @@ public class ShoppingListStorage {
         helper = ShoppingListOpenHelper.getInstance(context);
     }
 
-    public long insert(ShoppingList list){
+    public long insert(String name){
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues shoppingListValues = new ContentValues();
-        shoppingListValues.put(NAME, list.getName());
+        shoppingListValues.put(NAME, name);
         return db.insert(TABLE_NAME, null, shoppingListValues);
     }
 
@@ -43,9 +47,9 @@ public class ShoppingListStorage {
         return db.update(TABLE_NAME, values, "_id=?", new String[] {Long.toString(list.getId())});
     }
 
-    public long remove(ShoppingList list){
+    public long remove(long id){
         SQLiteDatabase db = helper.getWritableDatabase();
-        return db.delete(list.getName(), "_id=?", new String[] {Long.toString(list.getId())});
+        return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(id)});
     }
 
     public ShoppingList get(long id){
@@ -70,9 +74,12 @@ public class ShoppingListStorage {
         public ShoppingList get(){
             if (isBeforeFirst() || isAfterLast())
                 return null;
+
             String nameText = getString(getColumnIndex(NAME));
             int id = getInt(getColumnIndex(ID));
-            return new ShoppingList(nameText, id);
+            ListItemStorage listItemStorage = ListItemStorage.getInstance(context);
+            ListItemStorage.ListItemWrapper items = listItemStorage.getAllItemsInList(id);
+            return new ShoppingList(nameText, id, items);
         }
     }
 }

@@ -41,9 +41,7 @@ public class ProductActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
 
@@ -70,16 +68,14 @@ public class ProductActivity extends AppCompatActivity {
             return;
         }
 
-        Store s = new Store(selectedStoreId, null, null, null);
-        Deal d = null;
+        Long dealId = null;
 
         if (deal.getText().length() > 0) {
-            d = new Deal(-1, Integer.parseInt(deal.getText().toString()), s);
-            d.setId(DealStorage.getInstance(this).insert(d));
+            int d = Integer.parseInt(deal.getText().toString());
+            dealId = DealStorage.getInstance(this).insert(d, selectedStoreId);
         }
 
-        Product p = new Product(-1, Integer.parseInt(price.getText().toString()), name.getText().toString(), s, d);
-        ProductStorage.getInstance(this).insert(p);
+        ProductStorage.getInstance(this).insert(Integer.parseInt(price.getText().toString()), name.getText().toString(), selectedStoreId, dealId);
 
         setResult(Activity.RESULT_OK);
         finish();

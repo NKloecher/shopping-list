@@ -26,15 +26,24 @@ public class StoreActivity extends AppCompatActivity {
         EditText name = findViewById(R.id.name);
         EditText address = findViewById(R.id.address);
         EditText website = findViewById(R.id.website);
-        Store store = new Store(-1, name.getText().toString(), address.getText().toString(), website.getText().toString());
-        new InsertAsyncTask().execute(store);
+        new InsertAsyncTask(name.getText().toString(), address.getText().toString(), website.getText().toString()).execute();
     }
 
     class InsertAsyncTask extends AsyncTask<Store, Void, Long> {
+        String name;
+        String address;
+        String website;
+
+        public InsertAsyncTask(String name, String address, String website) {
+            this.name = name;
+            this.address = address;
+            this.website = website;
+        }
+
         @Override
         protected Long doInBackground(Store... ss) {
             StoreStorage storage = StoreStorage.getInstance(StoreActivity.this);
-            return storage.insert(ss[0]);
+            return storage.insert(name, address, website);
         }
 
         @Override

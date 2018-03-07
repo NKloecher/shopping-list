@@ -26,6 +26,4 @@ public class Deal {
     public int price() {
         return dealPrice;
     }
-
-    public void setId(long id) { this.id = id; }
 }

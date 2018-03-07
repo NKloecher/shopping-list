@@ -30,18 +30,18 @@ public class ListItemStorage {
         ps = ProductStorage.getInstance(context);
     }
 
-    public long insert(ListItem listItem, long listId) {
+    public long insert(int amount, long productId, long listId) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(AMOUNT, listItem.getAmount());
-        values.put(PRODUCT_ID, listItem.getProduct().getId());
+        values.put(AMOUNT, amount);
+        values.put(PRODUCT_ID, productId);
         values.put(SHOPPING_LIST_ID, listId);
         return db.insert(TABLE_NAME, null, values);
     }
 
-    public long remove(ListItem listItem) {
+    public long remove(long itemId) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
-        return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(listItem.getId())});
+        return db.delete(TABLE_NAME, "_id=?", new String[] {Long.toString(itemId)});
     }
 
     public long update(ListItem listItem, int listId) {

@@ -27,12 +27,12 @@ public class StoreStorage {
         openHelper = ShoppingListOpenHelper.getInstance(context);
     }
 
-    public long insert(Store s) {
+    public long insert(String name, String address, String website) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(NAME, s.getName());
-        values.put(ADDRESS, s.getAddress());
-        values.put(WEBSITE, s.getWebsite());
+        values.put(NAME, name);
+        values.put(ADDRESS, address);
+        values.put(WEBSITE, website);
         return db.insert(TABLE_NAME, null, values);
     }
 

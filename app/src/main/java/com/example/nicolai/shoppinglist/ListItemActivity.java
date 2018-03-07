@@ -51,10 +51,16 @@ public class ListItemActivity extends AppCompatActivity {
             return;
         }
 
-        Product p = new Product(productId, -1, null, null, null);
-        int amount = Integer.parseInt(((EditText)findViewById(R.id.amount)).getText().toString());
-        ListItem listItem = new ListItem(-1, p, amount);
-        ListItemStorage.getInstance(ListItemActivity.this).insert(listItem, listId);
+        EditText amountE = findViewById(R.id.amount);
+
+        if (amountE.getText().length() == 0) {
+            Toast.makeText(this, "amount is required", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        int amount = Integer.parseInt(amountE.getText().toString());
+
+        ListItemStorage.getInstance(this).insert(amount, productId, listId);
         finish();
     }
 
@@ -62,8 +68,6 @@ public class ListItemActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PRODUCT_SELECT_RESULT && resultCode == Activity.RESULT_OK) {
             productId = data.getLongExtra(ProductSelectActivity.SELECTED_PRODUCT_ID_EXTRA, -1);
-
-
             new GetProductAsyncTask().execute();
         } else {
             throw new Error("invalid requestCode or resultCode");

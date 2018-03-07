@@ -29,11 +29,11 @@ public class DealStorage {
         ss = ss.getInstance(context);
     }
 
-    public long insert(Deal d) {
+    public long insert(int deal, long storeId) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DEAL_PRICE, d.price());
-        values.put(STORE_ID, d.getStore().getId());
+        values.put(DEAL_PRICE, deal);
+        values.put(STORE_ID, storeId);
         return db.insert(TABLE_NAME, null, values);
     }
 

@@ -35,13 +35,13 @@ public class ProductStorage {
         ss = StoreStorage.getInstance(context);
     }
 
-    public long insert(Product p) {
+    public long insert(int price, String name, long storeId, Long dealId) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(PRICE, p.getPrice());
-        values.put(NAME, p.getName());
-        values.put(DEAL_ID, p.getDeal() != null ? p.getDeal().getId() : null);
-        values.put(STORE_ID, p.getStore().getId());
+        values.put(PRICE, price);
+        values.put(NAME, name);
+        values.put(DEAL_ID, dealId);
+        values.put(STORE_ID, storeId);
         return db.insert(TABLE_NAME, null, values);
     }
 

@@ -30,4 +30,5 @@ public class ListItem {
     public int price(){
         return amount * product.price();
     }
+    public int normalPrice() { return amount * product.getPrice(); }
 }

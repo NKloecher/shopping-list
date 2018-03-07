@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         storage = ShoppingListStorage.getInstance(this);
         new GetAsyncTask().execute();
+        ListView lists = findViewById(R.id.mainListView);
+        registerForContextMenu(lists);
     }
 
     @Override
@@ -46,6 +50,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         //todo toolbar actions
         return true;
+    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_menu, menu);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+                .getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.list_delete:
+                new DeleteAsyncTask(info.id).execute();
+                return true;
+        }
+        return false;
     }
 
     public void createShoppingList(View view){
@@ -73,11 +94,28 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    class DeleteAsyncTask extends AsyncTask<Void,Void,Void>{
+        long listId;
+        public DeleteAsyncTask(long listId) {
+            this.listId = listId;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            storage.remove(listId);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            new GetAsyncTask().execute();
+        }
+    }
+
     class InsertAsyncTask extends AsyncTask<Void,Void,Void>{
         @Override
         protected Void doInBackground(Void... voids) {
-            ShoppingList list = new ShoppingList(newListNameInput.getText().toString(), -1);
-            storage.insert(list);
+            storage.insert(newListNameInput.getText().toString());
             return null;
         }
 
