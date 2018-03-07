@@ -65,7 +65,11 @@ public class ListItemActivity extends AppCompatActivity {
 
 
             new GetProductAsyncTask().execute();
-        } else {
+        }
+        else if (resultCode == Activity.RESULT_CANCELED){
+            //Working as intended
+        }
+        else {
             throw new Error("invalid requestCode or resultCode");
         }
     }
