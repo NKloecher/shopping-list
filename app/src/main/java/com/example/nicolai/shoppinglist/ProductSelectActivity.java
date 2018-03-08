@@ -13,9 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
-import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.storage.ProductStorage;
 import com.example.nicolai.shoppinglist.storage.StoreStorage;
 
@@ -38,7 +36,7 @@ public class ProductSelectActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedStoreId = l;
-                new GetStoresAsyncTask().execute();
+                new GetProductsAsyncTask().execute();
             }
 
             @Override
