@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.nicolai.shoppinglist.ActuallyEditProductActivity"
+    tools:showIn="@layout/activity_actually_edit_product">
+
+    <EditText
+        android:id="@+id/edit_product_name"
+        android:hint="Product Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/edit_product_price"
+        android:hint="Product Price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edit_product_deal"
+        android:hint="Product Deal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/remove_product_button"
+        android:text="Delete"
+        android:onClick="onDeleteProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

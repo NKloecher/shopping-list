@@ -5,4 +5,5 @@
     <string name="add_store_button">add_product_button</string>
     <string name="title_activity_view_products">ViewProductsActivity</string>
     <string name="title_activity_edit_product">EditProductActivity</string>
+    <string name="title_activity_actually_edit_product">ActuallyEditProductActivity</string>
 </resources>

@@ -60,6 +60,10 @@ public class ProductSelectActivity extends AppCompatActivity {
         if ((requestCode == CREATE_STORE_RESULT || requestCode == CREATE_PRODUCT_RESULT) && resultCode == Activity.RESULT_OK) {
             new GetStoresAsyncTask().execute();
         }
+        //todo crashes if no amount/product given when clicking "done"
+        else if (resultCode == Activity.RESULT_CANCELED){
+            //do nothing
+        }
         else {
             throw new Error("invalid requestCode or resultCode");
         }

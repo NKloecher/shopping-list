@@ -1,6 +1,8 @@
 package com.example.nicolai.shoppinglist;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,9 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private EditText newListNameInput;
     private SimpleCursorAdapter adapter;
 
+    //todo Shopping list items updating when items is changed
+    //todo Make it look more "streamlined", same context menus/buttons/toats in the whole app
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getApplicationContext().deleteDatabase("SHOPPING_LIST"); //how to delete database on startup
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

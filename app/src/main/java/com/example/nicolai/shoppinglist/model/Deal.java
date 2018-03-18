@@ -26,4 +26,13 @@ public class Deal {
     public int price() {
         return dealPrice;
     }
+
+    public void setDealPrice(int dealPrice) {
+        this.dealPrice = dealPrice;
+    }
+
+    @Override
+    public String toString() {
+        return ""+dealPrice;
+    }
 }

@@ -2,6 +2,7 @@ package com.example.nicolai.shoppinglist;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +10,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.example.nicolai.shoppinglist.model.Store;
+import com.example.nicolai.shoppinglist.storage.ListItemStorage;
+import com.example.nicolai.shoppinglist.storage.ProductStorage;
 import com.example.nicolai.shoppinglist.storage.StoreStorage;
 
 public class StoreActivity extends AppCompatActivity {
@@ -24,10 +28,10 @@ public class StoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_store);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton remove = findViewById(R.id.remove_button);
-        remove.hide();
+        Button remove = findViewById(R.id.remove_button);
+        remove.setVisibility(View.INVISIBLE);
         if (getIntent().getLongExtra("Store", -1) != -1){
-            remove.show();
+            remove.setVisibility(View.VISIBLE);
             new GetAsyncTask().execute();
             toolbar.setTitle("Update Store");
         }
@@ -51,11 +55,44 @@ public class StoreActivity extends AppCompatActivity {
 
         private StoreStorage storage;
         private Store store;
+
+        //test to remove item references everywhere
+        private ListItemStorage itemStorage;
+        private ProductStorage productStorage;
+
+
         @Override
         protected Void doInBackground(Void... voids) {
             storage = StoreStorage.getInstance(StoreActivity.this);
             store = storage.get(getIntent().getLongExtra("Store",-1));
             storage.remove(store);
+            //todo Remove list associations! and all items from lists
+
+            itemStorage = ListItemStorage.getInstance(StoreActivity.this);
+            productStorage = ProductStorage.getInstance(StoreActivity.this);
+
+            //todo so ineffective.....
+            Cursor itemList = itemStorage.getAll();
+            try {
+                while (itemList.moveToNext()){
+                    Cursor productList = productStorage.getAll();
+
+                    try {
+                        while ((productList.moveToNext())){
+                    if (store.getId() == productList.getLong(productList.getColumnIndex("STORE_ID")) && itemList.getLong(itemList.getColumnIndex("PRODUCT_ID")) == productList.getLong(productList.getColumnIndex("_id"))){
+                        itemStorage.remove(itemList.getInt(itemList.getColumnIndex("_id")));
+                    }
+
+                        }
+                    }finally {
+                        productList.close();
+                    }
+                }
+            }finally {
+                itemList.close();
+            }
+
+
             return null;
         }
 

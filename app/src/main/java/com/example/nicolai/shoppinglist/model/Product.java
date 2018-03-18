@@ -36,6 +36,10 @@ public class Product {
         return deal;
     }
 
+    public void setDeal(Deal deal) {
+        this.deal = deal;
+    }
+
     public Store getStore() {
         return store;
     }
