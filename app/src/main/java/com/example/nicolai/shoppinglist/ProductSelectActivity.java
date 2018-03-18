@@ -14,9 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
-import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.storage.ProductStorage;
 import com.example.nicolai.shoppinglist.storage.StoreStorage;
 
@@ -37,9 +35,9 @@ public class ProductSelectActivity extends AppCompatActivity {
         Spinner storeSpinner = findViewById(R.id.store_spinner);
         storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
-                selectedStoreId = id;
-                new GetStoresAsyncTask().execute();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedStoreId = l;
+                new GetProductsAsyncTask().execute();
             }
 
             @Override
@@ -60,12 +58,7 @@ public class ProductSelectActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == CREATE_STORE_RESULT || requestCode == CREATE_PRODUCT_RESULT) && resultCode == Activity.RESULT_OK) {
-            Log.d("reqCode", Integer.toString(requestCode));
-            Log.d("resCode", Integer.toString(resultCode));
             new GetStoresAsyncTask().execute();
-        }
-        else if (resultCode == Activity.RESULT_CANCELED){
-            //Working as intended
         }
         else {
             throw new Error("invalid requestCode or resultCode");

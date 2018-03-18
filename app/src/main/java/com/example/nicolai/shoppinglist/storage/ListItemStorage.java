@@ -53,7 +53,7 @@ public class ListItemStorage {
 
     public ListItem get(long id) {
         SQLiteDatabase db = openHelper.getReadableDatabase();
-        ListItemWrapper cursor = new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, AMOUNT, PRODUCT_ID}, "_id=?", new String[] {Long.toString(id)},
+        ListItemWrapper cursor = new ListItemWrapper(db.query(TABLE_NAME, new String[]{_id, DONE, AMOUNT, PRODUCT_ID}, "_id=?", new String[] {Long.toString(id)},
             null, null,null,null));
         cursor.moveToNext();
         return cursor.get();

@@ -66,8 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_margin="10dp"
-            android:onClick="onDeleteStore"
-            app:srcCompat="@drawable/ic_clear_black_24dp" />
+            android:onClick="onDeleteStore" />
 
         <Space
             android:layout_width="10dp"
