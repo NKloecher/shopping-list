@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, ViewStoresActivity.class));
         }
         if (item.getItemId() == R.id.action_products){
-            startActivity(new Intent(this, ProductActivity.class));
+            startActivity(new Intent(this, ViewProductsActivity.class));
             //todo make proper ViewProductActivity -> per store basis
         }
         return true;

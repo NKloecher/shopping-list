@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -50,6 +51,7 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     public void onCreateProduct(View view) {
+        Log.d("TEST", "INSERT TASK");
         new InsertAsyncTask().execute();
     }
 
@@ -101,6 +103,7 @@ public class ProductActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             setResult(Activity.RESULT_OK);
+            Log.d("TEST TAG", "PRODUCT ACTIVITY");
             finish();
         }
     }

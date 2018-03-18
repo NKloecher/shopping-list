@@ -20,9 +20,16 @@
         <activity android:name=".ListItemActivity" />
         <activity android:name=".StoreActivity" />
         <activity android:name=".ProductSelectActivity" />
-        <activity android:name=".ProductActivity"/>
-        <activity android:name=".ViewStoresActivity">
-        </activity>
+        <activity android:name=".ProductActivity" />
+        <activity android:name=".ViewStoresActivity" />
+        <activity
+            android:name=".ViewProductsActivity"
+            android:label="@string/title_activity_view_products"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".EditProductActivity"
+            android:label="@string/title_activity_edit_product"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

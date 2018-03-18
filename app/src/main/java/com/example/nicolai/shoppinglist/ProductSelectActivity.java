@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -36,8 +37,8 @@ public class ProductSelectActivity extends AppCompatActivity {
         Spinner storeSpinner = findViewById(R.id.store_spinner);
         storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedStoreId = l;
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long id) {
+                selectedStoreId = id;
                 new GetStoresAsyncTask().execute();
             }
 
@@ -59,7 +60,12 @@ public class ProductSelectActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if ((requestCode == CREATE_STORE_RESULT || requestCode == CREATE_PRODUCT_RESULT) && resultCode == Activity.RESULT_OK) {
+            Log.d("reqCode", Integer.toString(requestCode));
+            Log.d("resCode", Integer.toString(resultCode));
             new GetStoresAsyncTask().execute();
+        }
+        else if (resultCode == Activity.RESULT_CANCELED){
+            //Working as intended
         }
         else {
             throw new Error("invalid requestCode or resultCode");
