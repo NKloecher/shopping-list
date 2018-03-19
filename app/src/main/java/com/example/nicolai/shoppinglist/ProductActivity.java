@@ -69,26 +69,29 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     class InsertAsyncTask extends AsyncTask<Void, Void, Void> {
+        EditText name = findViewById(R.id.name);
+        EditText price = findViewById(R.id.price);
+        EditText deal = findViewById(R.id.deal);
+
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected void onPreExecute() {
             if (selectedStoreId == -1) {
                 Toast.makeText(ProductActivity.this, "no store selected", Toast.LENGTH_LONG).show();
-                return null;
+                return;
             }
-
-            EditText name = findViewById(R.id.name);
-            EditText price = findViewById(R.id.price);
-            EditText deal = findViewById(R.id.deal);
 
             if (name.getText().length() == 0) {
                 Toast.makeText(ProductActivity.this, "name is required", Toast.LENGTH_LONG).show();
-                return null; //todo something wrong here... very very wrong
+                return; //todo something wrong here... very very wrong
             }
             if (price.getText().length() == 0) {
                 Toast.makeText(ProductActivity.this, "price is required", Toast.LENGTH_LONG).show();
-                return null;
+                return;
             }
+        }
 
+        @Override
+        protected Void doInBackground(Void... voids) {
             Long dealId = null;
 
             if (deal.getText().length() > 0) {

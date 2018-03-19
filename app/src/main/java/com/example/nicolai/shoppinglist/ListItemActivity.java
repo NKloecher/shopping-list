@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,20 +69,25 @@ public class ListItemActivity extends AppCompatActivity {
     }
 
     class InsertAsyncTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (productId == -1) {
-                Toast.makeText(ListItemActivity.this, "no product selected", Toast.LENGTH_LONG).show();
-                return null;
-            }
+        EditText amountE = findViewById(R.id.amount);
 
-            EditText amountE = findViewById(R.id.amount);
+        @Override
+        protected void onPreExecute() {
+            if (productId == -1) {
+                Snackbar.make(findViewById(R.id.coordinator), "no product selected", Snackbar.LENGTH_LONG).show();
+                cancel(true);
+                return;
+            }
 
             if (amountE.getText().length() == 0) {
-                Toast.makeText(ListItemActivity.this, "amount is required", Toast.LENGTH_LONG).show();
-                return null;
+                Snackbar.make(findViewById(R.id.coordinator), "amount is required", Snackbar.LENGTH_LONG).show();
+                cancel(true);
+                return;
             }
+        }
 
+        @Override
+        protected Void doInBackground(Void... voids) {
             int amount = Integer.parseInt(amountE.getText().toString());
             ListItemStorage.getInstance(ListItemActivity.this).insert(amount, productId, listId, false);
             return null;
