@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getApplicationContext().deleteDatabase("SHOPPING_LIST"); //how to delete database on startup
-        getApplicationContext().deleteDatabase("STORE");
-        getApplicationContext().deleteDatabase("PRODUCT");
+//        getApplicationContext().deleteDatabase("SHOPPING_LIST"); //how to delete database on startup
+//        getApplicationContext().deleteDatabase("STORE");
+//        getApplicationContext().deleteDatabase("PRODUCT");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
