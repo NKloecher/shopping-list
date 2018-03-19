@@ -73,7 +73,7 @@ public class EditProductActivity extends AppCompatActivity {
                 productList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                        Intent i = new Intent(EditProductActivity.this, ActuallyEditProductActivity.class); //todo actually edit the product.......
+                        Intent i = new Intent(EditProductActivity.this, ActuallyEditProductActivity.class);
                         i.putExtra("ProductID", id);
                         i.putExtra("StoreID", getIntent().getLongExtra("Store",-1));
                         startActivityForResult(i, 1);
@@ -84,10 +84,4 @@ public class EditProductActivity extends AppCompatActivity {
             }
         }
     }
-
-
-    //todo async task + execute
-    //todo setup xml/view for edit product
-    //activity_edit_product and content_edit_product
-
 }

@@ -88,7 +88,7 @@ public class ActuallyEditProductActivity extends AppCompatActivity {
         productStorage.remove(product);
 
         //todo should probably remove deals too...
-        //todo should remove from shopping list too
+        //todo should remove from shopping list too-- done I think
 
         itemStorage = ListItemStorage.getInstance(ActuallyEditProductActivity.this);
 

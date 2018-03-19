@@ -82,7 +82,7 @@ public class ProductActivity extends AppCompatActivity {
 
             if (name.getText().length() == 0) {
                 Toast.makeText(ProductActivity.this, "name is required", Toast.LENGTH_LONG).show();
-                return null; //todo something wrong here... very very wrong
+                return null; //todo something wrong here... very very wrong. Needs handler. I think I just rewrote this activity from scratch anyway....
             }
             if (price.getText().length() == 0) {
                 Toast.makeText(ProductActivity.this, "price is required", Toast.LENGTH_LONG).show();

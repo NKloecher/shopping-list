@@ -22,9 +22,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.example.nicolai.shoppinglist.model.Deal;
 import com.example.nicolai.shoppinglist.model.Product;
 import com.example.nicolai.shoppinglist.model.ShoppingList;
+import com.example.nicolai.shoppinglist.storage.DealStorage;
+import com.example.nicolai.shoppinglist.storage.ProductStorage;
 import com.example.nicolai.shoppinglist.storage.ShoppingListStorage;
+import com.example.nicolai.shoppinglist.storage.StoreStorage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getApplicationContext().deleteDatabase("SHOPPING_LIST"); //how to delete database on startup
+        getApplicationContext().deleteDatabase("SHOPPING_LIST"); //how to delete database on startup
+        getApplicationContext().deleteDatabase("STORE");
+        getApplicationContext().deleteDatabase("PRODUCT");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         new GetAsyncTask().execute();
         ListView lists = findViewById(R.id.mainListView);
         registerForContextMenu(lists);
+        new TestDataAsyncTask().execute();
     }
 
     @Override
@@ -61,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.action_products){
             startActivity(new Intent(this, ViewProductsActivity.class));
-            //todo make proper ViewProductActivity -> per store basis
         }
         return true;
     }
@@ -108,7 +114,37 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    class DeleteAsyncTask extends AsyncTask<Void,Void,Void>{
+    class TestDataAsyncTask extends AsyncTask<Void,Void,Void> {
+
+        private StoreStorage storeStorage;
+        private ProductStorage productStorage;
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            storeStorage = StoreStorage.getInstance(MainActivity.this);
+            productStorage = ProductStorage.getInstance(MainActivity.this);
+            if (storeStorage.get(1) == null){
+
+
+            long netto = storeStorage.insert("Netto","Vestervej 44", "Netto.dk");
+            long coop = storeStorage.insert("Coop","Omvejen 2", "Coop.dk");
+            long fakta = storeStorage.insert("Fakta", "Ly 1", "Fakta.dk");
+
+            productStorage.insert(15, "Cola", netto,null);
+            productStorage.insert(30, "Peanuts", netto, null);
+
+            productStorage.insert(4500, "TV, Samsung", fakta, null);
+            productStorage.insert(7, "mælk", fakta, null);
+
+            productStorage.insert(25, "Øl", coop, null);
+            productStorage.insert(50, "Påskeøl", coop, DealStorage.getInstance(MainActivity.this).insert(39, coop));
+            }
+
+            return null;
+        }
+    }
+
+        class DeleteAsyncTask extends AsyncTask<Void,Void,Void>{
         long listId;
         public DeleteAsyncTask(long listId) {
             this.listId = listId;

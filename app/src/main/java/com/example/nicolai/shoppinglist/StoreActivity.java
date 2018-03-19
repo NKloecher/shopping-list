@@ -66,12 +66,12 @@ public class StoreActivity extends AppCompatActivity {
             storage = StoreStorage.getInstance(StoreActivity.this);
             store = storage.get(getIntent().getLongExtra("Store",-1));
             storage.remove(store);
-            //todo Remove list associations! and all items from lists
+            //todo Remove list associations! and all items from lists-- Done I think!
 
             itemStorage = ListItemStorage.getInstance(StoreActivity.this);
             productStorage = ProductStorage.getInstance(StoreActivity.this);
 
-            //todo so ineffective.....
+            //so ineffective.....
             Cursor itemList = itemStorage.getAll();
             try {
                 while (itemList.moveToNext()){

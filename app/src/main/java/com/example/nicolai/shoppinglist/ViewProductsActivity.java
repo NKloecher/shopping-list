@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.example.nicolai.shoppinglist.storage.ProductStorage;
 import com.example.nicolai.shoppinglist.storage.StoreStorage;
 
 public class ViewProductsActivity extends AppCompatActivity {
@@ -27,7 +28,6 @@ public class ViewProductsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         new GetAsyncTask().execute();
-
     }
 
 
@@ -54,7 +54,6 @@ public class ViewProductsActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent i = new Intent(ViewProductsActivity.this, EditProductActivity.class);
-                        //todo do product activity
                         i.putExtra("Store", id);
                         startActivity(i);
                     }
@@ -65,4 +64,6 @@ public class ViewProductsActivity extends AppCompatActivity {
         }
 
     }
+
+
 }
